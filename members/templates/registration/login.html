@@ -1,0 +1,25 @@
+{% extends 'base_new.html' %}
+
+{% block title %}Login{% endblock %}
+{% block content %}
+
+<h1>Login</h1>
+<br><br>
+
+<div class="form-group">
+    <form method="POST">
+        {% csrf_token %}
+        <!-- {{ form.as_p }} -->
+       
+    <input type="text" class="form-control" placeholder="username" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username">
+  </div>
+  <br>
+  <div class="form-group">
+    <input type="password" class="form-control"   placeholder="Password" name="password"autocomplete="current-password" required id="id_password">
+  </div>
+  <small id="emailHelp" class="form-text text-muted">Not registered? Register<a href=""> Here</a></small><br>
+        <button class="btn btn-secondary">login</button>
+    </form>
+</div>
+
+{% endblock %}

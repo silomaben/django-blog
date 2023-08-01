@@ -1,0 +1,28 @@
+{% extends 'base_new.html' %}
+ 
+{% block title %}Create new blog post{% endblock %}
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h1>add blog post</h1>
+
+    <div class="form-control">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+        <button class="btn btn-secondary">post</button>
+    </form>
+    </div>
+
+    <script>
+        var name = '{{ user.id }}';
+        document.getElementById("elder").value = name;
+    </script>
+{% else %}
+    <h3>You are not allowed here...and you know it</h3>
+{% endif %}
+    
+     
+{% endblock %}
+

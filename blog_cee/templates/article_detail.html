@@ -1,0 +1,108 @@
+{% extends 'base_new.html' %}
+{% load static %}
+{% block title %}{{ post.title_tag }}{% endblock %}
+ 
+<h1>post</h1>
+{% block content %}
+
+    <h1>{{ post.title }}</h1>
+    <small>by: {{ post.author.first_name}} - {{ post.post_date}} &nbsp;&nbsp;&nbsp;
+        {% if user.is_authenticated %}
+            {% if user.id ==  post.author.id %}
+            <a href="{% url 'update_post' post.pk %}">(Edit)</a>
+            <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
+            {% endif %}
+        {% endif %}
+
+    </small><br>
+    <hr>
+
+    {% if post.header_image %}
+    <img src="{{post.header_image.url}}" alt=""> <br>
+    {{post.body|safe}}
+    {% endif %}
+
+    <br><br>
+    <!-- <a href="{%url 'home' %}" class=" btn btn-secondary">Back</a> -->
+
+   
+    <hr>
+    <form action="{% url 'like_post' post.pk %}" method="POST">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+            {% if liked %}
+            <button type="submit", name="post_id", value="{{ post.id }}" , class="btn btn-danger btn-sm">
+                Unlike
+            </button> - {{ total_likes }} likes
+            {% else %}
+            <button type="submit", name="post_id", value="{{ post.id }}" , class="btn btn-primary btn-sm">
+                Like
+            </button> - {{ total_likes }} likes
+            {% endif %}
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+            Login to like
+        {% endif %}
+    </form>
+    <hr>
+
+    
+
+    <div class="card mb-3" >
+        <div class="row no-gutters">
+          <div class="col-md-2">
+            {% if post.author.profile.profile_pic.url %}
+                <img src="{{post.author.profile.profile_pic.url}}" class="card-img" alt="...">
+
+            {% else %}
+            <img src="{% static 'blog/images/default-user.jpg' %}" class="card-img" alt="...">
+
+            {% endif %}
+        </div>
+          <div class="col-md-10">
+            <div class="card-body">
+              <h5 class="card-title">{{ post.author.first_name}} {{ post.author.last_name}}</h5>
+              <p class="card-text text-muted">
+                
+                <a href="{% url 'show_profile_page' post.author.profile.id %}">Profile Page</a> | 
+                
+                {% if post.author.profile.website_url  %}
+                    <a  target="_blank" href="{{post.author.profile.website_url}}">Website</a>
+                {% endif %}
+                {% if post.author.profile.facebook_url  %}
+                     | <a target="_blank" href="{{post.author.profile.facebook_url}}">facebook</a>
+                {% endif %}
+                {% if post.author.profile.twitter_url  %}
+                     | <a target="_blank" href="{{post.author.profile.twitter_url}}">twitter</a>
+                {% endif %}
+                {% if post.author.profile.instagram_url  %}
+                     | <a target="_blank" href="{{post.author.profile.instagram_url}}">instagram</a>
+                {% endif %}
+                {% if post.author.profile.linkedin_url  %}  
+                     | <a target="_blank" href="{{post.author.profile.linkedin_url}}">linkedin</a>
+                {% endif %}
+            </p>
+              <p class="card-text">{{post.author.profile.bio}}</p>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+
+      <h2>Comments...</h2>
+    {% if not post.comments.all %}
+      No Comments Yet ... <a href="{% url 'add_comment' post.pk %}">add a one</a>
+    {% else %}
+    <a href="{% url 'add_comment' post.pk %}">add comment</a><br><br>
+      {% for comment in post.comments.all %}
+       <strong> {{comment.name}} - {{comment.date_added}}</strong>
+       <br>
+       {{comment.body}}
+       <br><br>
+      {% endfor %}
+    {% endif %}
+    <hr>
+
+
+{% endblock %}
