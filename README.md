@@ -1,9 +1,11 @@
 
 Django Blog Template
+
 Welcome to the Django Blog Template! This is a simple and customizable template for creating your own blog using the Django web framework.
 
 
 Getting Started
+
 To set up the project, follow these steps:
 
 Clone the repository:
