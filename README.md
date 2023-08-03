@@ -1,4 +1,4 @@
-Sure! Here's a styled markdown version of the Django Blog Template:
+
 
 ---
 
